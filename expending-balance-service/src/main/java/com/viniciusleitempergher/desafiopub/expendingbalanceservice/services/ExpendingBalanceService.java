@@ -13,6 +13,7 @@ import com.viniciusleitempergher.desafiopub.expendingbalanceservice.proxies.Acco
 import com.viniciusleitempergher.desafiopub.expendingbalanceservice.repositories.ExpendingBalanceRepository;
 import com.viniciusleitempergher.desafiopub.expendingbalanceservice.requests.CreateExpendingBalanceRequest;
 import com.viniciusleitempergher.desafiopub.expendingbalanceservice.responses.BadRequest;
+import com.viniciusleitempergher.desafiopub.expendingbalanceservice.responses.ExpendingBalanceList;
 import com.viniciusleitempergher.desafiopub.expendingbalanceservice.responses.NotFound;
 
 @Service("expendingBalanceService")
@@ -74,5 +75,24 @@ public class ExpendingBalanceService {
 		} catch (ParseException e) {
 			throw new BadRequest("Data inválida!");
 		}
+	}
+
+	public void remove(String target) {
+		ExpendingBalance expendingBalance = expendingRepository.findById(UUID.fromString(target))
+				.orElseThrow(() -> new NotFound("Despesa não encontrada!"));
+
+		accountProxy.addBalance(expendingBalance.getContaId().toString(), expendingBalance.getValor().doubleValue());
+
+		expendingRepository.delete(expendingBalance);
+	}
+
+	public ExpendingBalanceList getFromPeriod(String dataInicial, String dataFinal, String tipoDespesa) {
+		ExpendingBalanceList response = new ExpendingBalanceList();
+
+		response.setExpendingList(expendingRepository
+				.findAllByDataPagamentoLessThanEqualAndDataPagamentoGreaterThanEqualAndTipoDespesaEquals(
+						formatAndValidateDate(dataFinal), formatAndValidateDate(dataInicial), tipoDespesa));
+
+		return response;
 	}
 }

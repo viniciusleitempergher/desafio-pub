@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.viniciusleitempergher.desafiopub.expendingbalanceservice.requests.CreateExpendingBalanceRequest;
+import com.viniciusleitempergher.desafiopub.expendingbalanceservice.responses.BalanceResponse;
 import com.viniciusleitempergher.desafiopub.expendingbalanceservice.responses.ExpendingBalanceList;
 import com.viniciusleitempergher.desafiopub.expendingbalanceservice.services.ExpendingBalanceService;
 
@@ -46,5 +47,10 @@ public class ExpendingBalanceController {
 	public ExpendingBalanceList listIncomingBalances(@RequestParam String dataInicial, @RequestParam String dataFinal,
 			@RequestParam @Nullable String tipoDespesa) {
 		return expendingService.getFromPeriod(dataInicial, dataFinal, tipoDespesa);
+	}
+
+	@GetMapping("/expending/total-balance")
+	public BalanceResponse retrieveTotalBalance() {
+		return expendingService.getTotalBalance();
 	}
 }

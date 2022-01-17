@@ -1,5 +1,6 @@
 package com.viniciusleitempergher.desafiopub.expendingbalanceservice.services;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -13,6 +14,7 @@ import com.viniciusleitempergher.desafiopub.expendingbalanceservice.proxies.Acco
 import com.viniciusleitempergher.desafiopub.expendingbalanceservice.repositories.ExpendingBalanceRepository;
 import com.viniciusleitempergher.desafiopub.expendingbalanceservice.requests.CreateExpendingBalanceRequest;
 import com.viniciusleitempergher.desafiopub.expendingbalanceservice.responses.BadRequest;
+import com.viniciusleitempergher.desafiopub.expendingbalanceservice.responses.BalanceResponse;
 import com.viniciusleitempergher.desafiopub.expendingbalanceservice.responses.ExpendingBalanceList;
 import com.viniciusleitempergher.desafiopub.expendingbalanceservice.responses.NotFound;
 
@@ -92,6 +94,20 @@ public class ExpendingBalanceService {
 		response.setExpendingList(expendingRepository
 				.findAllByDataPagamentoLessThanEqualAndDataPagamentoGreaterThanEqualAndTipoDespesaEquals(
 						formatAndValidateDate(dataFinal), formatAndValidateDate(dataInicial), tipoDespesa));
+
+		return response;
+	}
+
+	public BalanceResponse getTotalBalance() {
+		BigDecimal totalBalance = BigDecimal.valueOf(0);
+
+		for (ExpendingBalance balance : expendingRepository.findAll()) {
+			totalBalance = totalBalance.add(balance.getValor());
+		}
+
+		BalanceResponse response = new BalanceResponse();
+
+		response.setSaldoTotal(totalBalance);
 
 		return response;
 	}

@@ -51,7 +51,7 @@ public class IncomingBalanceController {
 	}
 	
 	@GetMapping("/incoming-balance/totalbalance")
-	public BalanceResponse totalDespesas() {
+	public BalanceResponse totalReceitas() {
 		return incomingBalanceService.getTotalBalance();
 	}
 }

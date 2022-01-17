@@ -1,6 +1,17 @@
 version: '3.7'
 
 services:
+  postgres-database:
+    image: pubdatabase
+    container_name: postgres-database
+    networks:
+      - desafio-pub-network
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
+    ports:
+      - "5432:5432"
+
   account-service:
     image: viniciusleitempergher/account-service:0.0.1-SNAPSHOT
     mem_limit: 700m
@@ -11,7 +22,9 @@ services:
     depends_on:
       - naming-server
       - rabbitmq
+      - postgres-database
     environment:
+      SPRING.DATASOURCE.URL: jdbc:postgresql://postgres-database:5432/desafiopub
       EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://naming-server:8761/eureka
       SPRING.ZIPKIN.BASEURL: http://zipkin-server:9411/
       RABBIT_URI: amqp://admin:123@rabbitmq:5672/
@@ -29,7 +42,9 @@ services:
       - naming-server
       - rabbitmq
       - account-service
+      - postgres-database
     environment:
+      SPRING.DATASOURCE.URL: jdbc:postgresql://postgres-database:5432/desafiopub
       EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://naming-server:8761/eureka
       SPRING.ZIPKIN.BASEURL: http://zipkin-server:9411/
       RABBIT_URI: amqp://admin:123@rabbitmq:5672/
@@ -47,7 +62,9 @@ services:
       - naming-server
       - rabbitmq
       - account-service
+      - postgres-database
     environment:
+      SPRING.DATASOURCE.URL: jdbc:postgresql://postgres-database:5432/desafiopub
       EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://naming-server:8761/eureka
       SPRING.ZIPKIN.BASEURL: http://zipkin-server:9411/
       RABBIT_URI: amqp://admin:123@rabbitmq:5672/
@@ -64,6 +81,7 @@ services:
     depends_on:
       - naming-server
       - rabbitmq
+      - postgres-database
     environment:
       EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://naming-server:8761/eureka
       SPRING.ZIPKIN.BASEURL: http://zipkin-server:9411/

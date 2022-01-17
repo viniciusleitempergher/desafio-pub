@@ -18,12 +18,63 @@ public class ExpendingBalance {
 	@Type(type = "org.hibernate.type.PostgresUUIDType")
 	@Column(name = "id", updatable = false, unique = true, nullable = false, columnDefinition = "uuid")
 	private UUID id;
-	
+
 	private BigDecimal valor;
 	private Date dataPagamento;
 	private Date dataPagamentoEsperado;
 	private String tipoDespesa;
 	private UUID contaId;
+
+	public ExpendingBalance() {
+		super();
+	}
+
+	public UUID getId() {
+		return id;
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
+	}
+
+	public BigDecimal getValor() {
+		return valor;
+	}
+
+	public void setValor(BigDecimal valor) {
+		this.valor = valor;
+	}
+
+	public Date getDataPagamento() {
+		return dataPagamento;
+	}
+
+	public void setDataPagamento(Date dataPagamento) {
+		this.dataPagamento = dataPagamento;
+	}
+
+	public Date getDataPagamentoEsperado() {
+		return dataPagamentoEsperado;
+	}
+
+	public void setDataPagamentoEsperado(Date dataPagamentoEsperado) {
+		this.dataPagamentoEsperado = dataPagamentoEsperado;
+	}
+
+	public String getTipoDespesa() {
+		return tipoDespesa;
+	}
+
+	public void setTipoDespesa(String tipoDespesa) {
+		this.tipoDespesa = tipoDespesa;
+	}
+
+	public UUID getContaId() {
+		return contaId;
+	}
+
+	public void setContaId(UUID contaId) {
+		this.contaId = contaId;
+	}
+
 }
-
-

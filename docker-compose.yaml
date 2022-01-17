@@ -60,7 +60,7 @@ services:
     ports:
       - "8765:8765"
     networks:
-      - currency-network
+      - desafio-pub-network
     depends_on:
       - naming-server
       - rabbitmq
@@ -77,7 +77,7 @@ services:
     ports:
       - "8761:8761"
     networks:
-      - currency-network
+      - desafio-pub-network
 
   zipkin-server:
     image: openzipkin/zipkin:2.23
@@ -85,7 +85,7 @@ services:
     ports:
       - "9411:9411"
     networks:
-      - currency-network
+      - desafio-pub-network
     environment:
       RABBIT_URI: amqp://admin:123@rabbitmq:5672
       SPRING_RABBITMQ_HOST: rabbitmq
@@ -100,10 +100,10 @@ services:
       - "5672:5672"
       - "15672:15672"
     networks:
-      - currency-network
+      - desafio-pub-network
     environment:
       RABBITMQ_DEFAULT_USER: admin
       RABBITMQ_DEFAULT_PASS: 123
 
 networks:
-  currency-network:
+  desafio-pub-network:

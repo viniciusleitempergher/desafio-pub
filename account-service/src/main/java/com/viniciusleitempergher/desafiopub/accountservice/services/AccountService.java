@@ -91,9 +91,9 @@ public class AccountService {
 
 	public void transferBalance(String from, String to, double balance) {
 		Account accountSender = accountRepository.findById(UUID.fromString(from))
-				.orElseThrow(() -> new NotFound("Conta não encontrada!"));
+				.orElseThrow(() -> new NotFound("Conta remetente não encontrada!"));
 		Account accountReceiver = accountRepository.findById(UUID.fromString(to))
-				.orElseThrow(() -> new NotFound("Conta não encontrada!"));
+				.orElseThrow(() -> new NotFound("Conta destino não encontrada!"));
 
 		// Validar se o remetente tem saldo para efetuar a transação
 		if (accountSender.getSaldo().compareTo(BigDecimal.valueOf(balance)) != 1
@@ -106,5 +106,29 @@ public class AccountService {
 
 		accountRepository.save(accountSender);
 		accountRepository.save(accountReceiver);
+	}
+
+	public void addBalance(String targetId, double balance) {
+		Account account = accountRepository.findById(UUID.fromString(targetId))
+				.orElseThrow(() -> new NotFound("Conta não encontrada!"));
+
+		account.setSaldo(account.getSaldo().add(BigDecimal.valueOf(balance)));
+
+		accountRepository.save(account);
+	}
+
+	public void subBalance(String targetId, double balance) {
+		Account account = accountRepository.findById(UUID.fromString(targetId))
+				.orElseThrow(() -> new NotFound("Conta não encontrada!"));
+		
+		// Validar se o remetente tem saldo para efetuar a subtração
+		if (account.getSaldo().compareTo(BigDecimal.valueOf(balance)) != 1
+				&& account.getSaldo().compareTo(BigDecimal.valueOf(balance)) != 0) {
+			throw new BadRequest("Esta conta não tem saldo para essa subtração!");
+		}
+		
+		account.setSaldo(account.getSaldo().subtract(BigDecimal.valueOf(balance)));
+
+		accountRepository.save(account);
 	}
 }

@@ -56,4 +56,14 @@ public class AccountController {
 	public void tranferBalance(@PathVariable String from, @PathVariable String to, @PathVariable double balance) {
 		accountService.transferBalance(from, to, balance);
 	}
+
+	@PutMapping("/account/add/{target}/balance/{balance}")
+	public void addBalance(@PathVariable String target, @PathVariable double balance) {
+		accountService.addBalance(target, balance);
+	}
+	
+	@PutMapping("/account/sub/{target}/balance/{balance}")
+	public void subBalance(@PathVariable String target, @PathVariable double balance) {
+		accountService.subBalance(target, balance);
+	}
 }

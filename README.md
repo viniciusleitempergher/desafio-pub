@@ -11,7 +11,7 @@
  * docker build ./expending-balance-service
  * docker build ./incoming-balance-service
  * docker build ./naming-server
- * docker build --name pubdatabase ./postgres
+ * docker build -t pubdatabase ./postgres
 
  <p align="justify">Após ter construído todas as imagens, basta iniciar tudo com o comando:</p>
 

@@ -24,6 +24,8 @@ public class IncomingBalance {
 	private Date dataRecebimentoEsperado;
 	private String descricao;
 	private String tipoReceita;
+	
+	@Type(type = "org.hibernate.type.PostgresUUIDType")
 	private UUID contaId;
 
 	public IncomingBalance() {

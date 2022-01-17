@@ -2,9 +2,12 @@ package com.viniciusleitempergher.desafiopub.incomingbalanceservice.controllers;
 
 import javax.annotation.Resource;
 
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.viniciusleitempergher.desafiopub.incomingbalanceservice.requests.CreateIncomingBalanceRequest;
@@ -20,5 +23,11 @@ public class IncomingBalanceController {
 	@PostMapping("/incoming-balance")
 	public void createIncomingBalance(@RequestBody CreateIncomingBalanceRequest requestData) {
 		incomingBalanceService.add(requestData);
+	}
+
+	@PutMapping("/incoming-balance/edit/{target}")
+	public void editIncomingBalance(@PathVariable String target,
+			@RequestBody CreateIncomingBalanceRequest requestData) {
+		incomingBalanceService.edit(target, requestData);
 	}
 }

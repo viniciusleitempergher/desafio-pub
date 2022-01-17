@@ -16,3 +16,5 @@
  <p align="justify">Após ter construído todas as imagens, basta iniciar tudo com o comando:</p>
 
  * docker-compose up
+
+ <strong>OBSERVAÇÃO: </strong> Para rodar o projeto não pode existir nenhum acento ou espaço no diretório do projeto!

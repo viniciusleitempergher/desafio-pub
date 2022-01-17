@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.viniciusleitempergher.desafiopub.incomingbalanceservice.requests.CreateIncomingBalanceRequest;
+import com.viniciusleitempergher.desafiopub.incomingbalanceservice.responses.BalanceResponse;
 import com.viniciusleitempergher.desafiopub.incomingbalanceservice.responses.IncomingBalanceList;
 import com.viniciusleitempergher.desafiopub.incomingbalanceservice.services.IncomingBalanceService;
 
@@ -47,5 +48,10 @@ public class IncomingBalanceController {
 	public IncomingBalanceList listIncomingBalances(@RequestParam String dataInicial, @RequestParam String dataFinal,
 			@RequestParam @Nullable String tipoReceita) {
 		return incomingBalanceService.getFromPeriod(dataInicial, dataFinal, tipoReceita);
+	}
+	
+	@GetMapping("/incoming-balance/totalbalance")
+	public BalanceResponse totalDespesas() {
+		return incomingBalanceService.getTotalBalance();
 	}
 }

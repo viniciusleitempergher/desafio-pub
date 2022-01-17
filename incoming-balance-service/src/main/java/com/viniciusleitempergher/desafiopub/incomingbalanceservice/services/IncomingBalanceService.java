@@ -1,5 +1,6 @@
 package com.viniciusleitempergher.desafiopub.incomingbalanceservice.services;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -13,6 +14,7 @@ import com.viniciusleitempergher.desafiopub.incomingbalanceservice.proxies.Accou
 import com.viniciusleitempergher.desafiopub.incomingbalanceservice.repositories.IncomingBalanceRepository;
 import com.viniciusleitempergher.desafiopub.incomingbalanceservice.requests.CreateIncomingBalanceRequest;
 import com.viniciusleitempergher.desafiopub.incomingbalanceservice.responses.BadRequest;
+import com.viniciusleitempergher.desafiopub.incomingbalanceservice.responses.BalanceResponse;
 import com.viniciusleitempergher.desafiopub.incomingbalanceservice.responses.IncomingBalanceList;
 import com.viniciusleitempergher.desafiopub.incomingbalanceservice.responses.NotFound;
 
@@ -97,6 +99,20 @@ public class IncomingBalanceService {
 		response.setListaReceitas(incomingBalanceRepository
 				.findAllByDataRecebimentoLessThanEqualAndDataRecebimentoGreaterThanEqualAndTipoReceitaEquals(
 						formatAndValidateDate(dataFinal), formatAndValidateDate(dataInicial), tipoReceita));
+
+		return response;
+	}
+
+	public BalanceResponse getTotalBalance() {
+		BigDecimal totalBalance = BigDecimal.valueOf(0);
+
+		for (IncomingBalance balance : incomingBalanceRepository.findAll()) {
+			totalBalance = totalBalance.add(balance.getValor());
+		}
+
+		BalanceResponse response = new BalanceResponse();
+
+		response.setSaldoTotal(totalBalance);
 
 		return response;
 	}

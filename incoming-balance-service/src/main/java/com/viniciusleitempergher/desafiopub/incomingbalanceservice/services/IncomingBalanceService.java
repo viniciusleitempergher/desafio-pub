@@ -64,14 +64,14 @@ public class IncomingBalanceService {
 		incomingBalanceRepository.save(incomingBalance);
 	}
 
-	public void validateType(String tipoReceita) {
+	private void validateType(String tipoReceita) {
 		if (!tipoReceita.equals("salário") && !tipoReceita.equals("presente") && !tipoReceita.equals("prêmio")
 				&& !tipoReceita.equals("outros")) {
 			throw new BadRequest("Tipo de receita inválido!");
 		}
 	}
 
-	public Date formatAndValidateDate(String date) {
+	private Date formatAndValidateDate(String date) {
 		SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
 		try {
 			return formatador.parse(date);
@@ -80,4 +80,13 @@ public class IncomingBalanceService {
 		}
 	}
 
+	public void remove(String id) {
+		IncomingBalance incomingBalance = incomingBalanceRepository.findById(UUID.fromString(id))
+				.orElseThrow(() -> new NotFound("Receita não encontrada!"));
+
+		// Remover o saldo da receita da conta
+		accountProxy.subBalance(incomingBalance.getContaId().toString(), incomingBalance.getValor().doubleValue());
+
+		incomingBalanceRepository.delete(incomingBalance);
+	}
 }

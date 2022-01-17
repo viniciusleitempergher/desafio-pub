@@ -3,6 +3,7 @@ package com.viniciusleitempergher.desafiopub.expendingbalanceservice.services;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import com.viniciusleitempergher.desafiopub.expendingbalanceservice.proxies.Acco
 import com.viniciusleitempergher.desafiopub.expendingbalanceservice.repositories.ExpendingBalanceRepository;
 import com.viniciusleitempergher.desafiopub.expendingbalanceservice.requests.CreateExpendingBalanceRequest;
 import com.viniciusleitempergher.desafiopub.expendingbalanceservice.responses.BadRequest;
+import com.viniciusleitempergher.desafiopub.expendingbalanceservice.responses.NotFound;
 
 @Service("expendingBalanceService")
 public class ExpendingBalanceService {
@@ -37,6 +39,24 @@ public class ExpendingBalanceService {
 
 		expendingRepository.save(expendingBalance);
 
+	}
+
+	public void edit(String target, CreateExpendingBalanceRequest requestData) {
+		validateType(requestData.getTipoDespesa());
+
+		ExpendingBalance expendingBalance = expendingRepository.findById(UUID.fromString(target))
+				.orElseThrow(() -> new NotFound("Despesa não encontrada!"));
+
+		accountProxy.addBalance(expendingBalance.getContaId().toString(), expendingBalance.getValor().doubleValue());
+		accountProxy.subBalance(requestData.getContaId().toString(), requestData.getValor().doubleValue());
+
+		expendingBalance.setContaId(requestData.getContaId());
+		expendingBalance.setDataPagamento(formatAndValidateDate(requestData.getDataPagamento()));
+		expendingBalance.setDataPagamentoEsperado(formatAndValidateDate(requestData.getDataPagamentoEsperado()));
+		expendingBalance.setTipoDespesa(requestData.getTipoDespesa());
+		expendingBalance.setValor(requestData.getValor());
+
+		expendingRepository.save(expendingBalance);
 	}
 
 	private void validateType(String tipoDespesa) {

@@ -3,7 +3,9 @@ package com.viniciusleitempergher.desafiopub.expendingbalanceservice.controllers
 import javax.annotation.Resource;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -25,4 +27,8 @@ public class ExpendingBalanceController {
 		expendingService.add(requestData);
 	}
 
+	@PutMapping("/expending/edit/{target}")
+	public void editExpending(@PathVariable String target, @RequestBody CreateExpendingBalanceRequest requestData) {
+		expendingService.edit(target, requestData);
+	}
 }

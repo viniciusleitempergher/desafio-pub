@@ -23,6 +23,7 @@ public class ExpendingBalance {
 	private Date dataPagamento;
 	private Date dataPagamentoEsperado;
 	private String tipoDespesa;
+	@Type(type = "org.hibernate.type.PostgresUUIDType")
 	private UUID contaId;
 
 	public ExpendingBalance() {

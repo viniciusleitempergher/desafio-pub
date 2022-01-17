@@ -4,6 +4,7 @@ import javax.annotation.Resource;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.viniciusleitempergher.desafiopub.accountservice.requests.CreateAccountRequest;
 import com.viniciusleitempergher.desafiopub.accountservice.responses.AccountCreatedResponse;
+import com.viniciusleitempergher.desafiopub.accountservice.responses.BalanceResponse;
+import com.viniciusleitempergher.desafiopub.accountservice.responses.ListAccountsResponse;
 import com.viniciusleitempergher.desafiopub.accountservice.services.AccountService;
 
 @RestController
@@ -33,9 +36,19 @@ public class AccountController {
 	public void editAccount(@PathVariable String id, @RequestBody CreateAccountRequest requestData) {
 		accountService.editAccount(id, requestData);
 	}
-	
+
 	@DeleteMapping("/account/{id}")
 	public void removeAccount(@PathVariable String id) {
 		accountService.removeAccount(id);
+	}
+
+	@GetMapping("/account")
+	public ListAccountsResponse listAccounts() {
+		return accountService.listAccounts();
+	}
+	
+	@GetMapping("/account/balance")
+	public BalanceResponse listBalance() {
+		return accountService.listTotalBalance();
 	}
 }

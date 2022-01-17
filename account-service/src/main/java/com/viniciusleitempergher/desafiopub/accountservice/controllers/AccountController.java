@@ -46,9 +46,14 @@ public class AccountController {
 	public ListAccountsResponse listAccounts() {
 		return accountService.listAccounts();
 	}
-	
+
 	@GetMapping("/account/balance")
 	public BalanceResponse listBalance() {
 		return accountService.listTotalBalance();
+	}
+
+	@PutMapping("/account/transfer/from/{from}/to/{to}/balance/{balance}")
+	public void tranferBalance(@PathVariable String from, @PathVariable String to, @PathVariable double balance) {
+		accountService.transferBalance(from, to, balance);
 	}
 }

@@ -88,4 +88,23 @@ public class AccountService {
 
 		return response;
 	}
+
+	public void transferBalance(String from, String to, double balance) {
+		Account accountSender = accountRepository.findById(UUID.fromString(from))
+				.orElseThrow(() -> new NotFound("Conta não encontrada!"));
+		Account accountReceiver = accountRepository.findById(UUID.fromString(to))
+				.orElseThrow(() -> new NotFound("Conta não encontrada!"));
+
+		// Validar se o remetente tem saldo para efetuar a transação
+		if (accountSender.getSaldo().compareTo(BigDecimal.valueOf(balance)) != 1
+				&& accountSender.getSaldo().compareTo(BigDecimal.valueOf(balance)) != 0) {
+			throw new BadRequest("Esta conta não tem saldo para essa transação!");
+		}
+
+		accountSender.setSaldo(accountSender.getSaldo().subtract(BigDecimal.valueOf(balance)));
+		accountReceiver.setSaldo(accountReceiver.getSaldo().add(BigDecimal.valueOf(balance)));
+
+		accountRepository.save(accountSender);
+		accountRepository.save(accountReceiver);
+	}
 }
